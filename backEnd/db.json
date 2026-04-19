@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "email": "vuqedota@mailinator.com",
+      "password": "$2a$10$qG//hliT1IiK1OuVrYI1NOcnLeJlkLfu4fhJBjgUZcKvrpys4AA7m",
+      "username": "sajufi",
+      "id": 1
+    },
+    {
+      "email": "moaz@gmail.com",
+      "password": "$2a$10$7f5PV3vIP9RdzJCYOox0PeKHcmRe8gSYYDbztzFisLn5eGC8yoA0.",
+      "username": "moaz",
+      "id": 2
+    },
+    {
+      "email": "sutelo@mailinator.com",
+      "password": "$2a$10$XR5mz8rEvhNugPfyEznNG.0TI7liaKPvBzBMO2CJvAT.ztiAX6bk6",
+      "username": "hetibesec",
+      "id": 3
+    },
+    {
+      "email": "zaka@mailinator.com",
+      "password": "$2a$10$xQagP6PGWknjuE49A/Zf4uBoUHVdVS.UABHBg28O0.ROg1yABZBOm",
+      "username": "sukizapygo",
+      "id": 4
+    },
+    {
+      "email": "labor@mailinator.com",
+      "password": "$2a$10$8bjGAPwO98TvMaAD7dzrmuTmpbnUTolwbOz7mbkFd7v/MsMcE5wUG",
+      "username": "kuqopeje",
+      "id": 5
+    },
+    {
+      "email": "moazReyad@gmail.com",
+      "password": "$2a$10$AhPw7ZLzkGdMFHRRULPZVeFoP5bX2u8xv5.cnaUIKasO4TgPqOjku",
+      "username": "moaz",
+      "id": 6
+    },
+    {
+      "email": "braa@gmail.com",
+      "password": "$2a$10$esI0ScW4XnqjfRltTPdd2eVe3Jf5prdyHyGDxaXIY3z5J126yK5SG",
+      "username": "braa hereher",
+      "id": 7
+    }
+  ]
+}
