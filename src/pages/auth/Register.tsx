@@ -3,10 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from '../../common/Button';
+import { Button } from '../../components/common/Button';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { registerUser } from '../../../features/auth/authActions';
+import { registerUser } from '../../features/auth/authActions';
 import { toast } from 'react-toastify';
 
 const registerSchema = z.object({

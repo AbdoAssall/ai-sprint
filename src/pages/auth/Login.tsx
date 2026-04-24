@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form } from '../../common/forms/Form';
-import { FormInput } from '../../common/forms/FormInput';
-import { Button } from '../../common/Button';
+import { Form } from '../../components/common/forms/Form';
+import { FormInput } from '../../components/common/forms/FormInput';
+import { Button } from '../../components/common/Button';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
-import { loginUser } from '../../../features/auth/authActions';
+import { loginUser } from '../../features/auth/authActions';
 import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {

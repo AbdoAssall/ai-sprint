@@ -1,56 +1,59 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as authService from '../../components/services/authService';
-import type { RegisterCredentials, LoginCredentials } from '../../components/types/user.types';
-import axios, { AxiosError } from 'axios';
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import * as authService from "../../services/authService";
+import type {
+  RegisterCredentials,
+  LoginCredentials,
+} from "../../types/user.types";
+import axios, { AxiosError } from "axios";
 
 export const registerUser = createAsyncThunk(
-    'auth/register',
-    async (credentials: RegisterCredentials, { rejectWithValue }) => {
-        try {
-            const data = await authService.register(credentials);
-            const token = data.token || data.accessToken;
-            if (data && token) {
-                localStorage.setItem('token', token);
-                return { ...data, token };
-            } else {
-                return rejectWithValue('Invalid response from server');
-            }
-        } catch (error) {
-            const err = error as AxiosError<{ message?: string }> | Error;
-            console.error('Register error:', err);
-            let errorMessage = 'حدث خطأ أثناء التسجيل';
-            if (axios.isAxiosError(err) && err.response?.data?.message) {
-                errorMessage = err.response.data.message;
-            } else if (err instanceof Error) {
-                errorMessage = err.message;
-            }
-            return rejectWithValue(errorMessage);
-        }
+  "auth/register",
+  async (credentials: RegisterCredentials, { rejectWithValue }) => {
+    try {
+      const data = await authService.register(credentials);
+      const token = data.token || data.accessToken;
+      if (data && token) {
+        localStorage.setItem("token", token);
+        return { ...data, token };
+      } else {
+        return rejectWithValue("Invalid response from server");
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }> | Error;
+      console.error("Register error:", err);
+      let errorMessage = "حدث خطأ أثناء التسجيل";
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      return rejectWithValue(errorMessage);
     }
+  },
 );
 
 export const loginUser = createAsyncThunk(
-    'auth/login',
-    async (credentials: LoginCredentials, { rejectWithValue }) => {
-        try {
-            const data = await authService.login(credentials);
-            const token = data.token || data.accessToken;
-            if (data && token) {
-                localStorage.setItem('token', token);
-                return { ...data, token };
-            } else {
-                return rejectWithValue('Invalid response from server');
-            }
-        } catch (error) {
-            const err = error as AxiosError<{ message?: string }> | Error;
-            console.error('Login error:', err);
-            let errorMessage = 'حدث خطأ أثناء تسجيل الدخول';
-            if (axios.isAxiosError(err) && err.response?.data?.message) {
-                errorMessage = err.response.data.message;
-            } else if (err instanceof Error) {
-                errorMessage = err.message;
-            }
-            return rejectWithValue(errorMessage);
-        }
+  "auth/login",
+  async (credentials: LoginCredentials, { rejectWithValue }) => {
+    try {
+      const data = await authService.login(credentials);
+      const token = data.token || data.accessToken;
+      if (data && token) {
+        localStorage.setItem("token", token);
+        return { ...data, token };
+      } else {
+        return rejectWithValue("Invalid response from server");
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }> | Error;
+      console.error("Login error:", err);
+      let errorMessage = "حدث خطأ أثناء تسجيل الدخول";
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      return rejectWithValue(errorMessage);
     }
+  },
 );
