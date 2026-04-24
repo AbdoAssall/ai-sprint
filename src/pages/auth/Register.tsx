@@ -7,6 +7,7 @@ import { Button } from '../../components/common/Button';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { registerUser } from '../../features/auth/authActions';
+import { clearError } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
 
 const registerSchema = z.object({
@@ -28,7 +29,19 @@ const Register: React.FC = () => {
     });
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { isLoading, error } = useAppSelector((state) => state.auth);
+    const { isLoading, error, user, token } = useAppSelector((state) => state.auth);
+
+    // Redirect if already logged in
+    useEffect(() => {
+        if (user && token) {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [user, token, navigate]);
+
+    // Clear errors on mount
+    useEffect(() => {
+        dispatch(clearError());
+    }, [dispatch]);
 
     useEffect(() => {
         if (error) {
@@ -98,7 +111,7 @@ const Register: React.FC = () => {
                                 type="text"
                                 placeholder="John Doe"
                                 {...register('username')}
-                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.username ? 'border-red-500' : 'border-gray-300'}`}
+                                className={`w-full px-4 py-2 text-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.username ? 'border-red-500' : 'border-gray-300'}`}
                             />
                             {errors.username && (
                                 <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>
@@ -114,7 +127,7 @@ const Register: React.FC = () => {
                                 type="email"
                                 placeholder="you@company.com"
                                 {...register('email')}
-                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                className={`w-full px-4 py-2 text-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                             />
                             {errors.email && (
                                 <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
@@ -130,7 +143,7 @@ const Register: React.FC = () => {
                                 type="password"
                                 placeholder="Create a strong password"
                                 {...register('password')}
-                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                                className={`w-full px-4 py-2 text-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                             />
                             {errors.password && (
                                 <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
@@ -149,7 +162,7 @@ const Register: React.FC = () => {
                                 type="password"
                                 placeholder="Confirm your password"
                                 {...register('confirmPassword')}
-                                className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
+                                className={`w-full px-4 py-2 text-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
                             />
                             {errors.confirmPassword && (
                                 <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>

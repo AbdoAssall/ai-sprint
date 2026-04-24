@@ -6,12 +6,25 @@ import { Button } from '../../components/common/Button';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { loginUser } from '../../features/auth/authActions';
+import { clearError } from '../../features/auth/authSlice';
 import { toast } from 'react-toastify';
 
 const Login: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { isLoading, error } = useAppSelector((state) => state.auth);
+    const { isLoading, error, user, token } = useAppSelector((state) => state.auth);
+
+    // Redirect if already logged in
+    useEffect(() => {
+        if (user && token) {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [user, token, navigate]);
+
+    // Clear errors on mount
+    useEffect(() => {
+        dispatch(clearError());
+    }, [dispatch]);
 
     useEffect(() => {
         if (error) {

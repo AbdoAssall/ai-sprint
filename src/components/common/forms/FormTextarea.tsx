@@ -32,7 +32,7 @@ export const FormTextarea: React.FC<FormTextareaProps> = ({
                 onChange={onChange}
                 required={required}
                 rows={rows}
-                className="form-textarea"
+                className="form-textarea text-gray-800"
             />
         </div>
     );

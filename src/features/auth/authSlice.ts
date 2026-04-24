@@ -36,10 +36,9 @@ export const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        // Don't set user/token here — user will be redirected to login
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;

@@ -41,6 +41,24 @@
       "password": "$2a$10$esI0ScW4XnqjfRltTPdd2eVe3Jf5prdyHyGDxaXIY3z5J126yK5SG",
       "username": "braa hereher",
       "id": 7
+    },
+    {
+      "email": "newuser@test.com",
+      "password": "$2a$10$kXMxTbGQ6nxAPSt0mH.gQeY4huEEBp3hn74AxZ9ev9jPXoQRKuxgq",
+      "username": "Test User",
+      "id": 8
+    },
+    {
+      "email": "testuser@example.com",
+      "password": "$2a$10$4NemzTL87Ug9/quDe/amn.tXwX3Lm4E95PrtD8.bEJLDUXyV4d/Ny",
+      "username": "Test User",
+      "id": 9
+    },
+    {
+      "email": "abdo@gmail.com",
+      "password": "$2a$10$iECcLYr.utI0JfiT5W5U8eo.4dswFaiF11l3K76uW1Vfrxjp3FXze",
+      "username": "abdo assal",
+      "id": 10
     }
   ]
 }
