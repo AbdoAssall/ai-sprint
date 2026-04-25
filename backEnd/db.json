@@ -59,6 +59,12 @@
       "password": "$2a$10$iECcLYr.utI0JfiT5W5U8eo.4dswFaiF11l3K76uW1Vfrxjp3FXze",
       "username": "abdo assal",
       "id": 10
+    },
+    {
+      "email": "ana@gmail.com",
+      "password": "$2a$10$xCDKNdV48lsAcSA314d4xujVtR64UR6uiYYzcoGyivNDy/wZaf/nm",
+      "username": "ana",
+      "id": 11
     }
   ]
 }
