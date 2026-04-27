@@ -129,7 +129,7 @@ const Navbar: React.FC = () => {
                     My Profile
                   </button>
 
-                  <button
+                  {/* <button
                     onClick={() => {
                       setDropdownOpen(false);
                       navigate("/settings");
@@ -138,9 +138,9 @@ const Navbar: React.FC = () => {
                   >
                     <FiSettings className="w-4 h-4 text-gray-400" />
                     Settings
-                  </button>
+                  </button> */}
 
-                  <button
+                  {/* <button
                     onClick={() => {
                       setDropdownOpen(false);
                     }}
@@ -148,7 +148,7 @@ const Navbar: React.FC = () => {
                   >
                     <FiShield className="w-4 h-4 text-gray-400" />
                     Security
-                  </button>
+                  </button> */}
                 </div>
 
                 {/* Divider */}
