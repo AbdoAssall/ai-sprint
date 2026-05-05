@@ -65,6 +65,12 @@
       "password": "$2a$10$xCDKNdV48lsAcSA314d4xujVtR64UR6uiYYzcoGyivNDy/wZaf/nm",
       "username": "ana",
       "id": 11
+    },
+    {
+      "email": "noha.fcs@gmail.com",
+      "password": "$2a$10$zqJbZyBg8NB/.wKtj8Bpm.XVnBNHpbveL660FunMohwllYfIOh35u",
+      "username": "Noha_Salim_85",
+      "id": 12
     }
   ]
 }
