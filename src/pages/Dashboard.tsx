@@ -1,19 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
+import { fetchProjects } from "../features/projects/projectsActions";
 import ProjectCard from "../components/projects/ProjectCard";
 import { SearchInput } from "../components/common/inputs/SearchInput";
+import { Spinner } from "../components/common/Spinner";
 
 const Dashboard: React.FC = () => {
-  const { projects } = useAppSelector((state) => state.projects);
+  const dispatch = useAppDispatch();
+  const { projects = [], loading, error } = useAppSelector((state) => state.projects);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredProjects = projects.filter((project) =>
+  useEffect(() => {
+    dispatch(fetchProjects());
+  }, [dispatch]);
+
+  const filteredProjects = (projects || []).filter((project) =>
     project.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const totalProjects = projects.length;
-  const activeProjects = projects.filter((p) => p.status === "ACTIVE").length;
-  const completedProjects = projects.filter((p) => p.status === "COMPLETED").length;
+  const totalProjects = (projects || []).length;
+  const activeProjects = (projects || []).filter((p) => p.status === "ACTIVE").length;
+  const completedProjects = (projects || []).filter((p) => p.status === "COMPLETED").length;
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -67,27 +75,37 @@ const Dashboard: React.FC = () => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <button className="p-2 rounded-lg border border-gray-200 hover:bg-gray-100">
-              <span className="text-lg">⊞⊞</span>
-            </button>
-            <button className="p-2 rounded-lg border border-gray-200 hover:bg-gray-100">
-              <span className="text-lg">≡</span>
-            </button>
             <button className="px-6 py-2 bg-linear-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold rounded-lg transition-all">
               + Create Project
             </button>
           </div>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="flex justify-center items-center py-12">
+            <Spinner />
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <p className="text-red-700">{error}</p>
+          </div>
+        )}
+
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
+        {!loading && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        )}
 
         {/* Empty State */}
-        {filteredProjects.length === 0 && (
+        {!loading && filteredProjects.length === 0 && (
           <div className="bg-white rounded-lg border border-gray-200 p-12 text-center">
             <div className="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
               <span className="text-3xl">✨</span>
