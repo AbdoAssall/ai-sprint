@@ -1,14 +1,55 @@
-export type ProjectStatus = 'ACTIVE' | 'COMPLETED' | 'ON-HOLD';
+import type { TaskDetails } from "./task.types";
+
+export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ON-HOLD";
 
 export interface Project {
-    id: string;
-    name: string;
-    description: string;
-    status: ProjectStatus;
-    progress: number;
-    icon: string;
-    iconBgColor: string;
-    teamMembers: number;
-    taskCount: number;
-    date: string;
+  id: string;
+  name: string;
+  description: string;
+  status: ProjectStatus;
+  progress: number;
+  icon: string;
+  iconBgColor: string;
+  teamMembers: number;
+  taskCount: number;
+  date: string;
+}
+
+// Updated
+export interface FormGenerateProjectDetails {
+  projectName: string;
+  description: string;
+}
+
+export interface FormEditProjectDetails {
+  name: string;
+  description: string;
+}
+
+export interface ProjectDetails {
+  _id: string;
+  title: string;
+  description: string;
+  createdBy?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  tasks?: TaskDetails[];
+}
+
+// Updated
+export interface AIGeneratingTasksResponse {
+  status: string;
+  data: ProjectDetails;
+  message?: string;
+}
+
+export interface EditProjectResponse {
+  status: string;
+  data: ProjectDetails;
+  message?: string;
+}
+
+export interface EditProjectPayload {
+  projectId: string;
+  projectData: FormEditProjectDetails;
 }
