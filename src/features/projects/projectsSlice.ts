@@ -1,104 +1,116 @@
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import type { Project } from '../../types/project.types';
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { generateProject, editProject, fetchProjects } from "./projectsActions";
+import type { Project, ProjectDetails } from "../../types/project.types";
 
 interface ProjectsState {
-    projects: Project[];
-    loading: boolean;
-    error: string | null;
+  projects: Project[];
+  projectData: ProjectDetails | null;
+
+  // loading states
+  isFetching: boolean;
+  isGenerating: boolean;
+  isEditing: boolean;
+
+  // success states
+  isGeneratingSuccess: boolean;
+  isEditingSuccess: boolean;
+
+  //errors
+  fetchErrorMsg: string | null;
+  generateErrorMsg: string | null;
+  editErrorMsg: string | null;
 }
 
 const initialState: ProjectsState = {
-    projects: [
-        {
-            id: '1',
-            name: 'Mobile App Redesign',
-            description: 'Redesign the mobile application with modern UI/UX principles and improved user flow.',
-            status: 'ACTIVE',
-            progress: 65,
-            icon: '📱',
-            iconBgColor: 'bg-purple-500',
-            teamMembers: 5,
-            taskCount: 15,
-            date: 'Mar 15'
-        },
-        {
-            id: '2',
-            name: 'Customer Portal v2',
-            description: 'Build a new customer portal with self-service features and analytics dashboard.',
-            status: 'ACTIVE',
-            progress: 42,
-            icon: '🔧',
-            iconBgColor: 'bg-orange-500',
-            teamMembers: 5,
-            taskCount: 2,
-            date: 'Apr 02'
-        },
-        {
-            id: '3',
-            name: 'Marketing Website',
-            description: 'Create a modern marketing website with interactive elements and SEO optimization.',
-            status: 'COMPLETED',
-            progress: 100,
-            icon: '💼',
-            iconBgColor: 'bg-blue-500',
-            teamMembers: 4,
-            taskCount: 28,
-            date: 'Feb 28'
-        },
-        {
-            id: '4',
-            name: 'API Migration',
-            description: 'Migrate legacy REST API to GraphQL with improved performance and documentation.',
-            status: 'ON-HOLD',
-            progress: 28,
-            icon: '⚙️',
-            iconBgColor: 'bg-orange-400',
-            teamMembers: 3,
-            taskCount: 10,
-            date: 'May 10'
-        },
-        {
-            id: '5',
-            name: 'Analytics Dashboard',
-            description: 'Build comprehensive analytics dashboard with real-time data visualization.',
-            status: 'ACTIVE',
-            progress: 73,
-            icon: '📊',
-            iconBgColor: 'bg-purple-600',
-            teamMembers: 6,
-            taskCount: 23,
-            date: 'Mar 28'
-        },
-        {
-            id: '6',
-            name: 'Mobile Backend API',
-            description: 'Develop scalable backend API for mobile applications with authentication.',
-            status: 'ACTIVE',
-            progress: 55,
-            icon: '🚀',
-            iconBgColor: 'bg-green-500',
-            teamMembers: 7,
-            taskCount: 18,
-            date: 'Apr 18'
-        }
-    ],
-    loading: false,
-    error: null
+  projects: [],
+  projectData: null,
+
+  // loading states
+  isFetching: false,
+  isGenerating: false,
+  isEditing: false,
+
+  // success states
+  isGeneratingSuccess: false,
+  isEditingSuccess: false,
+
+  // errors
+  fetchErrorMsg: null,
+  generateErrorMsg: null,
+  editErrorMsg: null,
 };
 
 const projectsSlice = createSlice({
-    name: 'projects',
-    initialState,
-    reducers: {
-        setLoading: (state, action: PayloadAction<boolean>) => {
-            state.loading = action.payload;
-        },
-        setError: (state, action: PayloadAction<string | null>) => {
-            state.error = action.payload;
-        }
-    }
+  name: "project",
+  initialState,
+  reducers: {
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isFetching = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.fetchErrorMsg = action.payload;
+    },
+    resetGenerateProjectState: (state) => {
+      state.projectData = null;
+      state.isGenerating = false;
+      state.isGeneratingSuccess = false;
+      state.generateErrorMsg = null;
+    },
+    resetEditProjectState: (state) => {
+      state.projectData = null;
+      state.isEditing = false;
+      state.isEditingSuccess = false;
+      state.editErrorMsg = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProjects.pending, (state) => {
+        state.isFetching = true;
+        state.fetchErrorMsg = null;
+      })
+      .addCase(fetchProjects.fulfilled, (state, action) => {
+        state.isFetching = false;
+        state.projects = action.payload;
+      })
+      .addCase(fetchProjects.rejected, (state, action) => {
+        state.isFetching = false;
+        state.fetchErrorMsg = action.payload as string;
+      })
+      .addCase(generateProject.pending, (state) => {
+        state.isGenerating = true;
+        state.generateErrorMsg = null;
+      })
+      .addCase(generateProject.fulfilled, (state, action) => {
+        state.isGenerating = false;
+        state.isGeneratingSuccess = true;
+        state.projectData = action.payload;
+      })
+      .addCase(generateProject.rejected, (state, action) => {
+        state.isGenerating = false;
+        state.generateErrorMsg = action.payload as string;
+      })
+      .addCase(editProject.pending, (state) => {
+        state.isEditing = true;
+        state.editErrorMsg = null;
+      })
+      .addCase(editProject.fulfilled, (state, action) => {
+        state.isEditing = false;
+        state.isEditingSuccess = true;
+        state.projectData = action.payload;
+      })
+      .addCase(editProject.rejected, (state, action) => {
+        state.isEditing = false;
+        state.editErrorMsg = action.payload as string;
+      });
+  },
 });
 
-export const { setLoading, setError } = projectsSlice.actions;
+export const {
+  setLoading,
+  setError,
+  resetGenerateProjectState,
+  resetEditProjectState,
+} = projectsSlice.actions;
 export default projectsSlice.reducer;

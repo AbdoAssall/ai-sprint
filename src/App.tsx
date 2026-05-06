@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import MainLayout from "./components/layout/MainLayout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "./components/modal/Modal";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         {/* Catch-all: redirect to dashboard (MainLayout will bounce to /login if unauthenticated) */}
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
+      <Modal />
       <ToastContainer />
     </>
   );

@@ -1,26 +1,23 @@
-import type { ReactNode } from 'react';
-import React from 'react';
+import type { FieldValues, UseFormHandleSubmit } from "react-hook-form";
 
-interface FormProps {
-    onSubmit: (data: Record<string, string | File>) => void | Promise<void>;
-    children: ReactNode;
-    className?: string;
-}
-
-export const Form: React.FC<FormProps> = ({ onSubmit, children, className = '' }) => {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const data: Record<string, string | File> = {};
-        formData.forEach((value, key) => {
-            data[key] = value as string | File;
-        });
-        onSubmit(data);
-    };
-
-    return (
-        <form onSubmit={handleSubmit} className={`form ${className}`}>
-            {children}
-        </form>
-    );
+type FormProps<T extends FieldValues> = {
+  handleSubmit: UseFormHandleSubmit<T>;
+  onSubmit: (data: T) => void;
+  children: React.ReactNode;
+  className?: string;
 };
+
+const Form = <T extends FieldValues>({
+  handleSubmit,
+  onSubmit,
+  children,
+  className = "w-full space-y-2",
+}: FormProps<T>) => {
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className={className} noValidate>
+      {children}
+    </form>
+  );
+};
+
+export default Form;
