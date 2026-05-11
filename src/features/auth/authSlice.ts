@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { User } from "../../types/user.types";
-import { registerUser, loginUser } from "./authActions";
+import { registerUser, loginUser, fetchCurrentUser } from "./authActions";
 
 interface AuthState {
   user: User | null;
@@ -27,6 +27,10 @@ export const authSlice = createSlice({
     },
     clearError: (state) => {
       state.error = null;
+    },
+    setAuth: (state, action) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
     },
   },
   extraReducers: (builder) => {
@@ -57,9 +61,23 @@ export const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
+      })
+      // Fetch current user handlers (OAuth callback)
+      .addCase(fetchCurrentUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       });
   },
 });
 
-export const { logout, clearError } = authSlice.actions;
+export const { logout, clearError, setAuth } = authSlice.actions;
 export default authSlice.reducer;

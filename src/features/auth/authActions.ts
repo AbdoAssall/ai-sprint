@@ -58,3 +58,35 @@ export const loginUser = createAsyncThunk(
     }
   },
 );
+
+export const fetchCurrentUser = createAsyncThunk(
+  "auth/fetchCurrentUser",
+  async (token: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/auth/valid-token",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      const user = response.data?.data;
+      if (user) {
+        localStorage.setItem("token", token);
+        return { user, token };
+      } else {
+        return rejectWithValue("Failed to fetch user data");
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ message?: string }> | Error;
+      console.error("Fetch user error:", err);
+      let errorMessage = "Failed to authenticate. Please try again.";
+      if (axios.isAxiosError(err) && err.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      return rejectWithValue(errorMessage);
+    }
+  },
+);
+

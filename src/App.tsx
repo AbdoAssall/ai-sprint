@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
+import OAuthCallback from "./pages/auth/OAuthCallback";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./components/layout/MainLayout";
 import { ToastContainer } from "react-toastify";
@@ -14,6 +15,7 @@ function App() {
         {/* Public auth routes */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/auth/callback" element={<OAuthCallback />} />
 
         {/* Protected routes wrapped in MainLayout (Navbar + auth guard) */}
         <Route element={<MainLayout />}>
