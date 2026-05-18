@@ -5,12 +5,14 @@ import { openModal } from "../../features/modal/modalSlice";
 import { MdOutlineDateRange } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaRegEdit } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
   project: Project;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const statusColors: Record<
     ProjectStatus,
@@ -35,7 +37,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   // console.log("colors", colors)
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+    <div
+      onClick={() => navigate(`/projectDetails/${project._id}`)}
+
+      className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
       {/* Icon and Status */}
       <div className="flex items-start justify-between mb-4">
         <div
@@ -88,7 +93,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
             </div>
             <div className="flex items-center gap-4">
               <button
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation();
                   dispatch(
                     openModal({
                       name: "deleteProject",
@@ -96,10 +102,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                     }),
                   )
                 }
-              >
+                }>
                 <RiDeleteBin6Line />
               </button>
-              <button onClick={() =>
+              <button onClick={(e) => {
+                e.stopPropagation();
+
                 dispatch(
                   openModal({
                     name: "editProject",
@@ -110,7 +118,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
                     },
                   }),
                 )
-              }>
+              }}>
                 <FaRegEdit />
               </button>
             </div>

@@ -21,7 +21,7 @@ function App() {
         {/* Protected routes wrapped in MainLayout (Navbar + auth guard) */}
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/projectDetails" element={<CanbanBoard />} />
+          <Route path="/projectDetails/:id" element={<CanbanBoard />} />
         </Route>
 
         {/* Catch-all: redirect to dashboard (MainLayout will bounce to /login if unauthenticated) */}
