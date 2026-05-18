@@ -26,10 +26,10 @@ const Dashboard: React.FC = () => {
 
   const totalProjects = (projects || []).length;
   const activeProjects = (projects || []).filter(
-    (p) => p.status === "ACTIVE",
+    (p) => p.status === "active",
   ).length;
   const completedProjects = (projects || []).filter(
-    (p) => p.status === "COMPLETED",
+    (p) => p.status === "completed",
   ).length;
 
   return (
@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
         {!isFetching && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project._id} project={project} />
             ))}
           </div>
         )}

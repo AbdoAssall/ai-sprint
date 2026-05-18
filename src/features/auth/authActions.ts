@@ -64,7 +64,7 @@ export const fetchCurrentUser = createAsyncThunk(
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/auth/valid-token",
+        "http://localhost:5000/auth/valid-token",
         {
           headers: { Authorization: `Bearer ${token}` },
         },

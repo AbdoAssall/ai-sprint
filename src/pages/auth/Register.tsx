@@ -188,8 +188,8 @@ const Register: React.FC = () => {
             <button
               type="button"
               onClick={() =>
-                (window.location.href =
-                  "http://localhost:5000/api/v1/auth/google")
+              (window.location.href =
+                "http://localhost:5000/auth/google")
               }
               className="flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
@@ -216,8 +216,8 @@ const Register: React.FC = () => {
             <button
               type="button"
               onClick={() =>
-                (window.location.href =
-                  "http://localhost:5000/api/v1/auth/github")
+              (window.location.href =
+                "http://localhost:5000/auth/github")
               }
               className="flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >

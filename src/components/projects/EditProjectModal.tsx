@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
@@ -41,7 +41,7 @@ export default function EditProjectModal({
     mode: "onBlur",
     resolver: zodResolver(projectSchema),
     defaultValues: {
-      name: projectDetails.title,
+      name: projectDetails.name,
       description: projectDetails.description,
     },
   });
@@ -53,15 +53,20 @@ export default function EditProjectModal({
 
   const onSubmit = async (data: ProjectFormData) => {
     await dispatch(
-      editProject({ projectId: projectDetails._id, projectData: data }),
+      editProject({ projectId: projectDetails?._id, projectData: data }),
     );
+    console.log("Project edited with ID:", projectDetails?._id, "and data:", data); // Check console log Here
   };
 
-  const handleClose = () => {
-    dispatch(closeModal());
-    reset();
+  const handleClose = useCallback(() => {
+    reset({
+      name: projectDetails.name,
+      description: projectDetails.description,
+    });
+
     dispatch(resetEditProjectState());
-  };
+    dispatch(closeModal());
+  }, [dispatch, reset, projectDetails]);
 
   useEffect(() => {
     if (isEditingSuccess) {
@@ -69,7 +74,7 @@ export default function EditProjectModal({
         handleClose();
       }, 1000);
     }
-  }, [isEditingSuccess]);
+  }, [isEditingSuccess, handleClose]);
 
   useEffect(() => {
     if (editErrorMsg) {
@@ -77,7 +82,7 @@ export default function EditProjectModal({
         handleClose();
       }, 3000);
     }
-  }, [editErrorMsg]);
+  }, [editErrorMsg, handleClose]);
 
   return (
     <>
@@ -85,7 +90,7 @@ export default function EditProjectModal({
       <ModalHeader
         title="edit project"
         icon={<FaRegEdit />}
-        subtitle={`Project name: ${projectDetails.title}`}
+        subtitle={`Project name: ${projectDetails.name}`}
       />
       {/* Modal Content */}
       <div className="w-full p-4 bg-white flex items-center justify-center">
@@ -102,7 +107,7 @@ export default function EditProjectModal({
         ) : isEditingSuccess ? (
           <SuccessModal
             title="Project Edited Successfully!"
-            description={`Edit The details of your project.`}
+            description="Your project details have been updated successfully."
           />
         ) : editErrorMsg ? (
           <ErrorModal
@@ -131,7 +136,9 @@ export default function EditProjectModal({
               label="Edit Project"
               icon={<FaRegEdit />}
               disabled={isEditing}
-              onClick={() => dispatch(closeModal())}
+              onConfirm={handleSubmit(onSubmit)}
+              onCancel={() => dispatch(closeModal())}
+
             />
           </Form>
         )}

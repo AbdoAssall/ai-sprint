@@ -15,13 +15,21 @@ export const inviteTeamMember = createAsyncThunk(
         return rejectWithValue(message || "Invitation is failed");
       }
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Check console log Here
       console.log(error);
-      return rejectWithValue(
-        error.response?.data?.message ||
-          "Something went wrong while inviting team member",
-      );
+      type AxiosErrorLike = { response?: { data?: { message?: unknown } } };
+      const axiosErr = error as AxiosErrorLike;
+      const messageFromResponse =
+        axiosErr.response &&
+        axiosErr.response.data &&
+        typeof axiosErr.response.data.message === "string"
+          ? axiosErr.response.data.message
+          : undefined;
+      const message =
+        messageFromResponse ?? (error instanceof Error ? error.message : undefined) ??
+        "Something went wrong while inviting team member";
+      return rejectWithValue(message);
     }
   },
 );

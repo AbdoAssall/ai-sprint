@@ -6,11 +6,16 @@ export type ModalDataMap = {
   addTask: { projectId: string; projectName: string };
   editTask: TaskDetails;
   editProject: ProjectDetails;
+  deleteProject: {
+    _id: string;
+    name: string;
+  };
+
   inviteTeamMember: undefined;
 };
 
 export type OpenModalPayload = {
   [T in keyof ModalDataMap]: ModalDataMap[T] extends undefined
-    ? { name: T }
-    : { name: T; data: ModalDataMap[T] };
+  ? { name: T }
+  : { name: T; data: ModalDataMap[T] };
 }[keyof ModalDataMap];

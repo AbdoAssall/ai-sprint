@@ -1,9 +1,9 @@
 import type { TaskDetails } from "./task.types";
 
-export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ON-HOLD";
+export type ProjectStatus = "active" | "completed" | "archived";
 
 export interface Project {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   status: ProjectStatus;
@@ -28,7 +28,7 @@ export interface FormEditProjectDetails {
 
 export interface ProjectDetails {
   _id: string;
-  title: string;
+  name: string;
   description: string;
   createdBy?: string;
   createdAt?: string;
@@ -52,4 +52,8 @@ export interface EditProjectResponse {
 export interface EditProjectPayload {
   projectId: string;
   projectData: FormEditProjectDetails;
+}
+export interface DeleteProjectResponse {
+  status: string;
+  message: string;
 }

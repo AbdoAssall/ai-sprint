@@ -6,8 +6,6 @@ import {
   FiLogOut,
   FiMail,
   FiChevronDown,
-  FiSettings,
-  FiShield,
 } from "react-icons/fi";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -83,7 +81,7 @@ const Navbar: React.FC = () => {
               aria-expanded={dropdownOpen}
             >
               {/* Avatar Circle */}
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-xs font-bold select-none shadow-sm">
+              <div className="w-8 h-8 rounded-full bg-linear-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-xs font-bold select-none shadow-sm">
                 {initials}
               </div>
               <span className="text-sm font-medium hidden sm:block">
@@ -98,10 +96,10 @@ const Navbar: React.FC = () => {
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-100 z-50 overflow-hidden animate-fadeIn">
                 {/* Account Details Header */}
-                <div className="px-4 py-4 bg-gradient-to-br from-purple-50 to-white border-b border-gray-100">
+                <div className="px-4 py-4 bg-linear-to-br from-purple-50 to-white border-b border-gray-100">
                   <div className="flex items-center gap-3">
                     {/* Large Avatar */}
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-sm font-bold shadow-md flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-sm font-bold shadow-md shrink-0">
                       {initials}
                     </div>
                     <div className="min-w-0">
@@ -109,7 +107,7 @@ const Navbar: React.FC = () => {
                         {user?.username ?? "—"}
                       </p>
                       <p className="text-xs text-gray-500 truncate flex items-center gap-1 mt-0.5">
-                        <FiMail className="w-3 h-3 flex-shrink-0" />
+                        <FiMail className="w-3 h-3 shrink-0" />
                         {user?.email ?? "—"}
                       </p>
                     </div>

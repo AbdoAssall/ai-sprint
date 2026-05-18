@@ -6,6 +6,7 @@ import type {
   AIGeneratingTasksResponse,
   EditProjectResponse,
   ProjectStatus,
+  DeleteProjectResponse
 } from "../types/project.types";
 
 interface BackendProject {
@@ -17,15 +18,15 @@ interface BackendProject {
 }
 
 const mapStatus = (status: string): ProjectStatus => {
-  const normalizedStatus = status?.toUpperCase();
+  const normalizedStatus = status?.toLowerCase();
   if (
-    normalizedStatus === "ACTIVE" ||
-    normalizedStatus === "COMPLETED" ||
-    normalizedStatus === "ON-HOLD"
+    normalizedStatus === "active" ||
+    normalizedStatus === "completed" ||
+    normalizedStatus === "archived"
   ) {
     return normalizedStatus;
   }
-  return "ACTIVE";
+  return "active";
 };
 
 export const projectService = {
@@ -35,7 +36,7 @@ export const projectService = {
       "/api/v1/projects",
     );
     return response.data.data.map((project) => ({
-      id: project._id,
+      _id: project._id,
       name: project.name,
       description: project.description,
       status: mapStatus(project.status),
@@ -64,7 +65,7 @@ export const projectService = {
   //     },
   //   );
   //   return {
-  //     id: response.data.data._id,
+  //     _id: response.data.data._id,
   //     name: project.name,
   //     description: project.description,
   //     status: project.status,
@@ -90,7 +91,7 @@ export const projectService = {
     );
     const project = response.data.data;
     return {
-      id: project._id,
+      _id: project._id,
       name: project.name,
       description: project.description,
       status: mapStatus(project.status),
@@ -117,7 +118,7 @@ export const projectService = {
   //   );
   //   const project = response.data.data;
   //   return {
-  //     id: project._id,
+  //     _id: project._id,
   //     name: project.name,
   //     description: project.description,
   //     status: mapStatus(project.status),
@@ -136,17 +137,19 @@ export const projectService = {
   //   };
   // },
 
-  // Delete project
-  async deleteProject(id: string): Promise<void> {
-    await api.delete(`/api/v1/projects/${id}`);
-  },
-};
+}
 
+// Delete project
+export const deleteProject = async (projectId: string,
+): Promise<DeleteProjectResponse> => {
+  const response = await api.delete(`/api/v1/projects/${projectId}`);
+  return response.data;
+};
 export const aiGenerateProjectTasks = async (
   projectData: FormGenerateProjectDetails,
 ): Promise<AIGeneratingTasksResponse> => {
   // Origingal Respone => Axios Response
-  const response = await api.post("/projects", projectData);
+  const response = await api.post("/api/v1/projects", projectData);
   // Return our BackEnd Response with interface AIGeneratingTasksResponse
   return response.data;
 };
@@ -155,8 +158,9 @@ export const editProject = async (
   projectId: string,
   projectData: FormEditProjectDetails,
 ): Promise<EditProjectResponse> => {
+  console.log("Editing project with ID:", projectId, "and data:", projectData); // Check console log Here
   // Origingal Respone => Axios Response
-  const response = await api.post(`/projects/:${projectId}`, projectData);
+  const response = await api.patch(`/api/v1/projects/${projectId}`, projectData);
   // Return our BackEnd Response with interface AIGeneratingTasksResponse
   return response.data;
 };

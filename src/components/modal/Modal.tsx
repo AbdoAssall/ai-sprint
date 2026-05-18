@@ -6,6 +6,7 @@ import EditTaskModal from "../tasks/EditTaskModal";
 import CreateProjectModal from "../projects/CreateProjectModal";
 import EditProjectModal from "../projects/EditProjectModal";
 import InvitationModal from "../invitation/InvitationModal";
+import DeleteProjectModal from "../projects/DeleteProjectModal";
 
 export default function Modal() {
   const dispatch = useAppDispatch();
@@ -47,8 +48,13 @@ export default function Modal() {
       }
       break;
     case "editProject":
-      if (data && "tasks" in data) {
+      if (data && "name" in data) {
         renderComponent = <EditProjectModal projectDetails={data} />;
+      }
+      break;
+    case "deleteProject":
+      if (data && "_id" in data) {
+        renderComponent = <DeleteProjectModal projectId={data._id} projectName={data.name} />;
       }
       break;
     case "inviteTeamMember":

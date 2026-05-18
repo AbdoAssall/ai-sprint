@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
@@ -44,11 +44,11 @@ export default function CreateProjectModal() {
     await dispatch(generateProject(data));
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     dispatch(closeModal());
     reset();
     dispatch(resetGenerateProjectState());
-  };
+  }, [dispatch, reset]);
 
   useEffect(() => {
     if (isGeneratingSuccess) {
@@ -56,7 +56,7 @@ export default function CreateProjectModal() {
         handleClose();
       }, 1000);
     }
-  }, [isGeneratingSuccess]);
+  }, [isGeneratingSuccess, handleClose]);
 
   useEffect(() => {
     if (generateErrorMsg) {
@@ -64,7 +64,7 @@ export default function CreateProjectModal() {
         handleClose();
       }, 3000);
     }
-  }, [generateErrorMsg]);
+  }, [generateErrorMsg, handleClose]);
 
   return (
     <>

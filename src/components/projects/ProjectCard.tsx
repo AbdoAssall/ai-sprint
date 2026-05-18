@@ -16,21 +16,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     ProjectStatus,
     { badge: string; progress: string }
   > = {
-    ACTIVE: {
+    active: {
       badge: "bg-green-100 text-green-700",
       progress: "bg-linear-to-r from-green-400 to-green-500",
     },
-    COMPLETED: {
+    completed: {
       badge: "bg-blue-100 text-blue-700",
       progress: "bg-linear-to-r from-blue-400 to-blue-500",
     },
-    "ON-HOLD": {
+    archived: {
       badge: "bg-orange-100 text-orange-700",
       progress: "bg-linear-to-r from-orange-400 to-orange-500",
     },
   };
-
+  console.log(project)
+  // console.log(project.status);
   const colors = statusColors[project.status];
+  // console.log("colors", colors)
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
@@ -85,25 +87,36 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               <span>{project.date}</span>
             </div>
             <div className="flex items-center gap-4">
-              <RiDeleteBin6Line />
-              <FaRegEdit
+              <button
                 onClick={() =>
                   dispatch(
                     openModal({
-                      name: "editProject",
-                      data: {
-                        _id: project.id,
-                        title: project.name,
-                        description: project.description,
-                      },
+                      name: "deleteProject",
+                      data: { _id: project._id, name: project.name },
                     }),
                   )
                 }
-              />
+              >
+                <RiDeleteBin6Line />
+              </button>
+              <button onClick={() =>
+                dispatch(
+                  openModal({
+                    name: "editProject",
+                    data: {
+                      _id: project._id,
+                      name: project.name,
+                      description: project.description,
+                    },
+                  }),
+                )
+              }>
+                <FaRegEdit />
+              </button>
             </div>
           </div>
         </div>
-        <span className="text-xs text-gray-500">{project.date}</span>
+        {/* <span className="text-xs text-gray-500">{project.date}</span> */}
       </div>
     </div>
   );

@@ -18,13 +18,21 @@ export const addingTask = createAsyncThunk(
         return rejectWithValue(message || "Adding new task is failed");
       }
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Check console log Here
       console.log(error);
-      return rejectWithValue(
-        error.response?.data?.message ||
-          "Something went wrong while adding task",
-      );
+      type AxiosErrorLike = { response?: { data?: { message?: unknown } } };
+      const axiosErr = error as AxiosErrorLike;
+      const messageFromResponse =
+        axiosErr.response &&
+        axiosErr.response.data &&
+        typeof axiosErr.response.data.message === "string"
+          ? axiosErr.response.data.message
+          : undefined;
+      const message =
+        messageFromResponse ?? (error instanceof Error ? error.message : undefined) ??
+        "Something went wrong while adding task";
+      return rejectWithValue(message);
     }
   },
 );
@@ -55,13 +63,21 @@ export const editingTask = createAsyncThunk(
         return rejectWithValue(message || "Editig task is failed");
       }
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Check console log Here
       console.log(error);
-      return rejectWithValue(
-        error.response?.data?.message ||
-          "Something went wrong while editing task",
-      );
+      type AxiosErrorLike = { response?: { data?: { message?: unknown } } };
+      const axiosErr = error as AxiosErrorLike;
+      const messageFromResponse =
+        axiosErr.response &&
+        axiosErr.response.data &&
+        typeof axiosErr.response.data.message === "string"
+          ? axiosErr.response.data.message
+          : undefined;
+      const message =
+        messageFromResponse ?? (error instanceof Error ? error.message : undefined) ??
+        "Something went wrong while editing task";
+      return rejectWithValue(message);
     }
   },
 );

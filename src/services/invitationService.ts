@@ -7,6 +7,6 @@ import type {
 export const invite = async (
   inviteData: FormInvitationDetails,
 ): Promise<InviteResponse> => {
-  const response = await api.post(`/users`, inviteData);
+  const response = await api.post(`/api/v1/teamMembers/invite`, inviteData);
   return response.data;
 };

@@ -5,7 +5,7 @@ import FormInput from "../../components/common/forms/FormInput";
 import Button from "../../components/common/Button";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { loginUser } from "../../features/auth/authActions";
+import { loginUser, fetchCurrentUser } from "../../features/auth/authActions";
 import { clearError } from "../../features/auth/authSlice";
 import { toast } from "react-toastify";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -30,16 +30,33 @@ const Login: React.FC = () => {
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isLoading, error, user, token } = useAppSelector(
-    (state) => state.auth,
-  );
+  const { isLoading, error } = useAppSelector((state) => state.auth);
+
+
 
   // Redirect if already logged in
+  // useEffect(() => {
+  //   if (user && token) {
+  //     navigate("/dashboard", { replace: true });
+  //   }
+  // }, [user, token, navigate]);
+
   useEffect(() => {
-    if (user && token) {
-      navigate("/dashboard", { replace: true });
+    const params = new URLSearchParams(window.location.search);
+    const oauthToken = params.get("token");
+
+    if (oauthToken) {
+      const authenticate = async () => {
+        const result = await dispatch(fetchCurrentUser(oauthToken));
+
+        if (fetchCurrentUser.fulfilled.match(result)) {
+          navigate("/dashboard", { replace: true });
+        }
+      };
+
+      authenticate();
     }
-  }, [user, token, navigate]);
+  }, [navigate, dispatch]);
 
   // Clear errors on mount
   useEffect(() => {
@@ -140,8 +157,8 @@ const Login: React.FC = () => {
             <button
               type="button"
               onClick={() =>
-                (window.location.href =
-                  "http://localhost:5000/api/v1/auth/google")
+              (window.location.href =
+                "http://localhost:5000/auth/google")
               }
               className="flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
@@ -168,8 +185,8 @@ const Login: React.FC = () => {
             <button
               type="button"
               onClick={() =>
-                (window.location.href =
-                  "http://localhost:5000/api/v1/auth/github")
+              (window.location.href =
+                "http://localhost:5000/auth/github")
               }
               className="flex items-center justify-center gap-2 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >

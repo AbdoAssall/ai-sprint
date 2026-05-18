@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { generateProject, editProject, fetchProjects } from "./projectsActions";
+import { generateProject, editProject, fetchProjects, deleteProject } from "./projectsActions";
 import type { Project, ProjectDetails } from "../../types/project.types";
 
 interface ProjectsState {
@@ -11,15 +11,19 @@ interface ProjectsState {
   isFetching: boolean;
   isGenerating: boolean;
   isEditing: boolean;
+  isDeleting: boolean;
+
 
   // success states
   isGeneratingSuccess: boolean;
   isEditingSuccess: boolean;
+  isDeletingSuccess: boolean;
 
   //errors
   fetchErrorMsg: string | null;
   generateErrorMsg: string | null;
   editErrorMsg: string | null;
+  deleteErrorMsg: string | null;
 }
 
 const initialState: ProjectsState = {
@@ -30,15 +34,16 @@ const initialState: ProjectsState = {
   isFetching: false,
   isGenerating: false,
   isEditing: false,
-
+  isDeleting: false,
   // success states
   isGeneratingSuccess: false,
   isEditingSuccess: false,
-
+  isDeletingSuccess: false,
   // errors
   fetchErrorMsg: null,
   generateErrorMsg: null,
   editErrorMsg: null,
+  deleteErrorMsg: null,
 };
 
 const projectsSlice = createSlice({
@@ -62,6 +67,12 @@ const projectsSlice = createSlice({
       state.isEditing = false;
       state.isEditingSuccess = false;
       state.editErrorMsg = null;
+    },
+    resetDeleteProjectState: (state) => {
+      state.projectData = null;
+      state.isDeleting = false;
+      state.isDeletingSuccess = false;
+      state.deleteErrorMsg = null;
     },
   },
   extraReducers: (builder) => {
@@ -103,6 +114,18 @@ const projectsSlice = createSlice({
       .addCase(editProject.rejected, (state, action) => {
         state.isEditing = false;
         state.editErrorMsg = action.payload as string;
+      })
+      .addCase(deleteProject.pending, (state) => {
+        state.isDeleting = true;
+        state.deleteErrorMsg = null;
+      })
+      .addCase(deleteProject.fulfilled, (state) => {
+        state.isDeleting = false;
+        state.isDeletingSuccess = true;
+      })
+      .addCase(deleteProject.rejected, (state, action) => {
+        state.isDeleting = false;
+        state.deleteErrorMsg = action.payload as string;
       });
   },
 });
@@ -112,5 +135,6 @@ export const {
   setError,
   resetGenerateProjectState,
   resetEditProjectState,
+  resetDeleteProjectState,
 } = projectsSlice.actions;
 export default projectsSlice.reducer;
